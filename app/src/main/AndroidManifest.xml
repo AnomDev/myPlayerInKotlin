@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.serbladev.myplayer">
 
+    <!-- Aquí le otorgamos permiso a la app para comunicarse con internet y poder coger las fotos de los item desde las URL -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application

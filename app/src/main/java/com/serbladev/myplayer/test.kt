@@ -1,5 +1,19 @@
 package com.serbladev.myplayer
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Aquí la clase Persona tiene un constructor que necesita un name de tipo String y un age de tipo Int. La creamos de tipo "open" porque
 //luego vamos a necesitarlo para crear clases que extiendan de Person.
 open class Person( name: String,  age: Int) {

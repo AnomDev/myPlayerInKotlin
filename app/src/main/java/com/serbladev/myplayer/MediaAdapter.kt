@@ -13,13 +13,13 @@ class MediaAdapter(private val items: List<MediaItem>) :
     RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
 
 
-    //2º: Implementamos los métodos obligatorios de nuestro MediaAdapter.Viewholder
+//2º: Implementamos los métodos obligatorios de nuestro MediaAdapter.Viewholder
 
     // Cada vez que queramos crear una nueva celda, vendrá al método onCreateViewHolder:
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.view_media_item, parent,false)
+
+        //Aquí estamos inflando el layout de cada item (usando la función de extension inflate que hemos creado)
+        val view = parent.inflate(R.layout.view_media_item)
         return ViewHolder(view)
     }
 
@@ -32,8 +32,7 @@ class MediaAdapter(private val items: List<MediaItem>) :
     // Aquí devolveremos el número de items que tiene este MediaAdapter
     override fun getItemCount(): Int = items.size
 
-
-    //1º: Creamos nuestro viewHolder. El contenedor donde va a pintarse la RecyclerView
+//1º: Creamos nuestro viewHolder. El contenedor donde va a pintarse la RecyclerView
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         //Relacionamos código con su XML
         private val title : TextView = view.findViewById(R.id.mediaTitle)
@@ -44,8 +43,12 @@ class MediaAdapter(private val items: List<MediaItem>) :
             //Aqui cargamos el texto del título en el TextView llamado title.
             title.text = mediaItem.title
 
-            //Aquí cargamos una foto en el imageView llamado Thumb
-            Glide.with(thumb).load(mediaItem.url).into(thumb)
+            //Aquí cargamos una foto en el imageView llamado Thumb (usando la función de extension loadUrl que hemos creado)
+            thumb.loadUrl(mediaItem.url)
+
+            itemView.setOnClickListener{
+                toast(mediaItem.title)
+            }
         }
     }
 

@@ -1,5 +1,8 @@
 package com.serbladev.myplayer
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Message
@@ -18,18 +21,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        toast("First toast")
+        toast("Welcome to my fisrt ReCATlerView in Kotlin")
 
         val recycler: RecyclerView = findViewById(R.id.recycler)
         recycler.adapter = MediaAdapter(getItems())
 
+    /*    toast("hello")
+        //Aquí estamos navegando entre actividades usando la función de extensión de tipo reified startActivity
+        startActivity<MainActivity>()
+
+        val intent = Intent(this, MainActivity:: class.java)
+        startActivity(intent)
+*/
+
+
+
 
     }
-
-
-    //Aquí se crea una función que nos sirve para generar todos los toast que necesitemos en nuestra aplicación.
-    private fun toast (message: String){
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
 }
+

@@ -15,12 +15,13 @@
         tools:src="@mipmap/ic_launcher"/>
 
     <TextView
+        android:textAlignment="center"
         android:id="@+id/mediaTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#333"
         android:padding="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
-        tools:text="Title"/>
+        tools:text="Neko"/>
 
 </LinearLayout>
