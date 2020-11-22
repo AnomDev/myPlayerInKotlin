@@ -13,18 +13,26 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_main.*
+
 import org.w3c.dom.Text
+
+//Este import hace referencia al XML que está importando nuestra vista, en este caso activity_main (así no necesitamos usar findViewById)
+import kotlinx.android.synthetic.main.activity_main.*
+
+//Esta es la manera recomendada de acceder a las vistas
+import com.serbladev.myplayer.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
         toast("Welcome to my fisrt ReCATlerView in Kotlin")
 
-        val recycler: RecyclerView = findViewById(R.id.recycler)
-        recycler.adapter = MediaAdapter(getItems())
+        binding.recyclerViewId.adapter = MediaAdapter(getItems())
 
     /*    toast("hello")
         //Aquí estamos navegando entre actividades usando la función de extensión de tipo reified startActivity

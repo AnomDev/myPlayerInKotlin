@@ -1,18 +1,8 @@
 package com.serbladev.myplayer
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 
 //Aquí la clase Persona tiene un constructor que necesita un name de tipo String y un age de tipo Int. La creamos de tipo "open" porque
 //luego vamos a necesitarlo para crear clases que extiendan de Person.
@@ -53,4 +43,28 @@ fun test() {
 // o que el nombre sea Sergio pero nos pida la edad.
     val itname = ItStaff("Sergio")
     val itage = ItStaff(30)
+
 }
+
+//HERRAMIENTAS DE CONTROL DE FLUJO
+fun flowControlToolWhen(view: View){
+
+    //el When es como el Switch de Java pero puede recibir cualquier tipo de dato y no necesita break
+    //Podemos asignarle el valor que devuelva el when a una variable, por eso lo ponemos lo primero "val result"
+    val result = when (view) {
+
+        //Aquí, en el lado izquierdo pondremos lo que queremos comprobar y en el lado derecho lo que ocurrirá cuando la comprobación se cumpla
+        //En Kotlin no hace falta que casteemos que es un TV o un VG porque al decirselo en la izquierda, él hace un "smartcast" y nos permite acceder
+        //a todos los atributos que tenga el elemento en sí (por eso se pone subrayado en verde)
+        //En este caso es "cuando la vista sea un textView, entonces haremos que guarde en val result el texto del mismo"
+        is TextView -> view.text.toString()
+
+        //En este caso es "cuando la vista sea un viewGroup, entonces haremos que guarde en val result el listado de hijos del VG"
+        is ViewGroup -> view.childCount.toString()
+
+        //Si queremos tener un caso por defecto para cuando no entre en ninguna de las comprobaciones anteriores no tenemos que poner default como
+        //en Java sino "else"
+        else -> "Nothing found"
+    }
+}
+
