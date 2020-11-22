@@ -49,30 +49,32 @@ class MediaAdapter(private val items: List<MediaItem>) :
 
         //Este método recibirá un MediaItem y cogerá el título y lo pondrá en el title, y cogerá la imágen y la inflará en el ImageView
         fun bind(mediaItem: MediaItem){
+            //Aquí añadimos una función de Scope que nos permita simplificar las llamadas al mismo binding ya que le hemos pasado el contexto con el "with"
+            with (binding){
 
-            //Podemos evitar usar los findViewById mediante el ViewBinding, para ello hemos de poner binding.laIdQueSea.
-            //Aunque en el XML se llame la id como media_title, en el código de KT puede ponerse mediaTitle y seguirá sabiendo a qué elemento te refieres
+                //Podemos evitar usar los findViewById mediante el ViewBinding, para ello hemos de poner binding.laIdQueSea.
+                //Aunque en el XML se llame la id como media_title, en el código de KT puede ponerse mediaTitle y seguirá sabiendo a qué elemento te refieres
 
-            //Aqui cargamos el texto del título en el TextView llamado title.
-            binding.mediaTitle.text = mediaItem.title
+                //Aqui cargamos el texto del título en el TextView llamado title.
+                mediaTitle.text = mediaItem.title
 
-            //Aquí cargamos una foto en el imageView llamado Thumb (usando la función de extension loadUrl que hemos creado)
-            binding.mediaThumb.loadUrl(mediaItem.url)
+                //Aquí cargamos una foto en el imageView llamado Thumb (usando la función de extension loadUrl que hemos creado)
+                mediaThumb.loadUrl(mediaItem.url)
 
-            //Aquí estamos cambiando la visibilidad del videoIndicator a "visible" o "invisible" en función de si el mediaItem es de tipo PHOTO o VIDEO
-            binding.mediaVideoIndicator.visibility= when (mediaItem.type) {
+                //Aquí estamos cambiando la visibilidad del videoIndicator a "visible" o "invisible" en función de si el mediaItem es de tipo PHOTO o VIDEO
+                mediaVideoIndicator.visibility= when (mediaItem.type) {
 
-                //El when, en el caso de los enum, es capaz de saber en tiempo de compilación cuántos subtipos tiene. Por eso, pinchámndole con ALT+click y
-                // dando a "Add remaining branches", él solo nos pintará todos los subtipos existentes, en este caso dentro de MediaItem
-                MediaItem.Type.PHOTO -> View.GONE
-                MediaItem.Type.VIDEO -> View.VISIBLE
-               //No hace falta añadir el "else" por la razón antes dicha, ya que sabe cuántos tipos existen dentro de MediaItem
-            }
+                    //El when, en el caso de los enum, es capaz de saber en tiempo de compilación cuántos subtipos tiene. Por eso, pinchámndole con ALT+click y
+                    // dando a "Add remaining branches", él solo nos pintará todos los subtipos existentes, en este caso dentro de MediaItem
+                    MediaItem.Type.PHOTO -> View.GONE
+                    MediaItem.Type.VIDEO -> View.VISIBLE
+                    //No hace falta añadir el "else" por la razón antes dicha, ya que sabe cuántos tipos existen dentro de MediaItem
+                }
 
-            itemView.setOnClickListener{
-                toast(mediaItem.title)
+                itemView.setOnClickListener{
+                    toast(mediaItem.title)
+                }
             }
         }
     }
-
 }
