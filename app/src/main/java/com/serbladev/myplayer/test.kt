@@ -68,3 +68,110 @@ fun flowControlToolWhen(view: View){
     }
 }
 
+//PRUEBAS CON FUNCIONES LAMBDA
+
+//La siguiente funcion realiza una suma con dos enteros que le damos.
+fun operaciones(){
+    /* val sum: (Int, Int) -> Int = { x, y -> x+ y} */
+    //También se podría poner de la siguiente manera:
+    val sum = {x: Int, y: Int -> x + y}
+    val mul = {x: Int, y: Int -> x * y}
+    //Uniendo suma y doOp, quedaría algo como:
+    val resultSum = doOp(2,3, sum) //lo que devolvería como resultado 5
+    val resultMul = doOp(2,3, mul) //lo que devolvería como resultado 6
+
+    //Incluso se podría realizar esto en una misma línea, por ejemplo para la resta
+    val res = doOp(2,3, {x,y -> x - y}) // lo que devolvería como resultado -1.
+
+    //Esta operación se podría sacar del paréntesis para poder trabajar con ella. Algo muy utilizado en los callbacks P. Ej:
+    val resAgain = doOp(6,3) { x, y ->
+        x - y
+    } // lo que devolvería como resultado 3.
+
+    //Una función, no es exactamente lo mismo que una lambda, con lo que yo no puedo llamarla directamente en otra función (en este caso no puedo pasar sumFunction como atributo
+    // dentro de resWithFunction) sino que tengo que hacer una llamada a la referencia de la funcion, eso se hace con los :: antes del nombre de la función)
+    val resWithFunction = doOp(2,3, ::sumaFunction)
+
+
+}
+
+//La siguiente función recibe dos enteros y una operación que queremos que realice:
+fun doOp(x: Int, y: Int, op: (Int,Int) -> Int) = op(x,y)
+
+fun sumaFunction(x: Int, y: Int): Int = x + y
+
+
+fun delegateLazy() {
+    //Aquí gracias a poner by lazy, lo que hacemos es que no le asignamos el valor 20 a la constante lazyVal hasta el momento en que la estemos
+    //usando. En este caso, lazyVal no tendría ningun valor hasta que la llamamos en lazyVal.toString().
+    //Esto es útil, por ejemplo, si tenemos una operación muy pesada, no la haríamos hasta el momento en que realmente lo necesitasemos.
+    val lazyVal by lazy {20}
+    lazyVal.toString()
+}
+
+// FUNCIONES LAMBDA WITH REIVERS (funcionan como funciones lambda de extensión)
+
+//************ APPLY
+
+/*fun TextView.apply2(body: TextView.() -> Unit): TextView {
+    this.body()
+    return this
+}*/
+
+//Para hacer genérica la función anterior se haría lo siguiente:
+fun <T> T.apply2(body: T.() -> Unit): T {
+    this.body()
+    return this
+}
+
+//************ RUN
+fun <T,U> T.run2(body: T.() -> U): U {
+    return this.body()
+}
+
+//************ LET
+fun <T,U> T.let2(body: (T) -> U): U {
+    return body(this)
+}
+
+//************ LET
+fun <T,U> T.with2(receiver: T, body: T.() -> U): U {
+    return receiver.body()
+}
+
+//************ ALSO
+fun <T> T.also2(body: (T) -> Unit): T {
+    body(this)
+    return this
+}
+
+
+//CREANDO UNA COLECCIÓN DESDE CERO
+fun collectionTest() {
+    //La colección de tipo listOf es una lista inmutable, es decir que no podremos hacer cosas como añadir otros números o cambiar los que ya están
+    // Hacer una lista inmutable hará que cuando estemos llamandola (lo que hacemos en la var result de abajo) nos devolverá una lista identica pero
+    // modificada con lo que hayamos dicho (abajó tendrá que crear 3 listas identicas que luego añade la peticion nueva, una por.filter, otra para .map
+    // y la ultima para .sorted. Esto, si la lista es grande y se hacen muchas llamadas, es una cagada en cuanto al rendimiento.
+    val listOfInt: List<Int> = listOf(2, 1, 5, 6)
+
+    // Guardamos en una variable result los filtros siguientes || .filter  nos filtraría sólo los números pares con el % 2
+    val result = listOfInt
+        //Para evitar la "cagada" explicada arriba usamos .asSequence, esto transforma la coleccion inmutable en una secuencia,
+        // que gestiona mejor los resultados y sólo crea 1 lista nueva, no 3. Pero luego necesitamos volver a transformala en una lista inmutable.
+        .asSequence()
+        .filter{ it % 2 == 0 }
+
+        //.map convierte el listado de int a listado de string
+        .map{it.toString()}
+
+        //.sorted nos ordena el listado
+        .sorted()
+
+        // Existen muchos más tipos de operadores que se pueden ver si pones .algo, es decir "listOfInt.XXXXX"
+
+        // Aquí le decimos que transforme la secuencia de nuevo a una lista inmutable
+        .toList()
+
+    //La colección  de tipo mutableListOf es una lista mutable, es decir que podremos hacer cosas como añadir otros números o cambiar los que ya están
+    val mutable = mutableListOf(3,2,5)
+}

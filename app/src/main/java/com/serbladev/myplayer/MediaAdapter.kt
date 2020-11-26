@@ -10,11 +10,22 @@ import com.bumptech.glide.Glide
 import com.serbladev.myplayer.databinding.ViewMediaItemBinding
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_media_item.view.*
+import kotlin.properties.Delegates
 
-// Aquí el MediaAdapter trabajará con item (privado porque no se va a usar nunca desde fuera), que es un listado de MediaItem
-class MediaAdapter(private val items: List<MediaItem>) :
+
+/*interface Listener {
+    fun onClick(mediaItem: MediaItem) : Unit // Para pasarlo a lambda, hay que ver su estructura: (Entrada) -> Salida, en este caso: (MediaItem) -> Unit
+}*/
+
+// Aquí el MediaAdapter trabajará con items, que es un listado de MediaItem.
+// List<MediaItem> está igualado como default a una lista vacía porque normalmente no tienes los datos al principio si no que los recibes
+// tras hacer una llamada a una BBDD por ejemplo.
+class MediaAdapter( items: List<MediaItem> = emptyList(), private val listener: (MediaItem) -> Unit) :
     RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
 
+     var items: List<MediaItem> by Delegates.observable(items) { _, _, _ ->
+        notifyDataSetChanged()
+    }
 
 //2º: Implementamos los métodos obligatorios de nuestro MediaAdapter.Viewholder
 
@@ -30,6 +41,7 @@ class MediaAdapter(private val items: List<MediaItem>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         holder.bind(item)
+        holder.itemView.setOnClickListener{listener(item)}
     }
 
     // Aquí devolveremos el número de items que tiene este MediaAdapter
@@ -71,9 +83,7 @@ class MediaAdapter(private val items: List<MediaItem>) :
                     //No hace falta añadir el "else" por la razón antes dicha, ya que sabe cuántos tipos existen dentro de MediaItem
                 }
 
-                itemView.setOnClickListener{
-                    toast(mediaItem.title)
-                }
+
             }
         }
     }
