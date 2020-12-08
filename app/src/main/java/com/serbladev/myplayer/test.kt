@@ -3,6 +3,10 @@ package com.serbladev.myplayer
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 //Aquí la clase Persona tiene un constructor que necesita un name de tipo String y un age de tipo Int. La creamos de tipo "open" porque
 //luego vamos a necesitarlo para crear clases que extiendan de Person.
@@ -174,4 +178,42 @@ fun collectionTest() {
 
     //La colección  de tipo mutableListOf es una lista mutable, es decir que podremos hacer cosas como añadir otros números o cambiar los que ya están
     val mutable = mutableListOf(3,2,5)
+}
+
+// CORUTINAS
+// Sirven para desarrollar tareas asíncronas de manera asíncrona (cambiando de hilo para no bloquear el principal)
+fun coroutines(viewGroup: ViewGroup){
+    //El GlobalScope nos dice en qué hilo estamos: el principal
+    GlobalScope.launch(Dispatchers.Main){
+        //Esta siguiente línea nos lleva el trabajo a otro hilo, en este caso llamado IO (porque es como si hicieramos una petición a un server)
+        val result = withContext(Dispatchers.IO){ heavyTask()}
+        print(result)
+    }
+}
+//Función fake para que parezca que estamos pidiendo información a un servidor.
+fun heavyTask(): String = "Hello"
+
+
+//NULLABLES
+fun nullable(){
+    val x: Int? = null
+    val l: Long = if(x!= null) x.toLong() else 0
+    //para comprobar que la X no es nula antes de hacer la operacion se podría hacer también esto:
+    // val l: Long = x?.toLong() ?: 0
+}
+
+//CLASES SELLADAS
+
+sealed class Op{
+    class Add(val value: Int): Op()
+    class Sub(val value: Int): Op()
+    class Mul(val value: Int): Op()
+    object Inc: Op()
+}
+
+fun sealedClassesDoOp(x: Int, op: Op): Int = when (op){
+    is Op.Add -> x + op.value
+    is Op.Sub -> x - op.value
+    is Op.Mul -> x * op.value
+    Op.Inc -> x + 1
 }
